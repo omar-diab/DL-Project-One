@@ -1,19 +1,18 @@
 # Regularization Ablation Study (CIFAR-10)
 
-This part of the project focuses on analyzing the effect of different regularization methods on an overfitting MLP baseline trained on CIFAR-10.
+This branch focuses on the regularization part of the project: analyzing how different regularization techniques affect an overfitting MLP baseline trained on CIFAR-10.
 
-Rather than presenting a standalone project, this branch represents the portion of the overall work dedicated to **regularization analysis under controlled experimental settings**.
+The main objective is to compare several regularization methods under a controlled setup, so that their effect on overfitting and generalization can be observed clearly and fairly.
 
 ## Scope of This Branch
 
-The purpose of this branch is to isolate and compare several regularization techniques while keeping all other training conditions fixed.  
-The goal is not to redesign the full pipeline, but to study how different regularization families affect overfitting and generalization within the shared project framework.
+This branch is specifically responsible for the regularization analysis. Its role is to keep the training pipeline fixed and isolate the effect of different regularization strategies.
 
-In this context, this branch is responsible for:
-- constructing an intentionally overfitting baseline,
-- applying selected regularization methods,
-- comparing their impact under identical settings,
-- reporting their effect on training, validation, and test performance.
+Within this scope, the branch:
+- constructs an intentionally overfitting baseline,
+- applies selected regularization methods,
+- compares them under identical settings,
+- evaluates their impact on training, validation, and test performance.
 
 ## Controlled Experimental Setup
 
@@ -26,7 +25,7 @@ To ensure a fair comparison, all experiments use the same configuration:
 - same epoch limit,
 - same random seed.
 
-Therefore, the only changing factor across experiments is the **regularization method**.
+This means the only factor that changes across experiments is the **regularization method**.
 
 ## Dataset Split
 
@@ -39,7 +38,7 @@ The split is saved and reused across all experiments to preserve consistency and
 
 ## Model
 
-The branch uses a fully connected MLP with:
+This branch uses a fully connected MLP with:
 - **Input dimension:** 3072
 - **Hidden layers:** [1024, 512, 256]
 - **Activation:** ReLU
@@ -116,7 +115,7 @@ These metrics are used to compare how effectively each method reduces overfittin
 
 ## Branch Structure
 
-```
+``` id="branch-structure"
 beyza/
 │
 ├─ notebooks/
@@ -150,9 +149,8 @@ beyza/
 
 Different regularization methods act in fundamentally different ways:
 
-- Explicit → constrains weights  
-- Stochastic → introduces noise  
-- Implicit → limits training dynamics  
-- Architectural → changes representation behavior  
-
+Explicit → constrains weights
+Stochastic → introduces noise
+Implicit → limits training dynamics
+Architectural → changes representation behavior
 This branch compares all of them under identical conditions.
