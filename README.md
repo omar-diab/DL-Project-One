@@ -1,0 +1,170 @@
+# Regularization Ablation Study (CIFAR-10)
+
+This branch focuses on analyzing different types of regularization techniques on an overfitting MLP baseline trained on CIFAR-10.
+
+## Objective
+
+The goal of this branch is to:
+- intentionally construct an overfitting baseline model
+- apply different regularization techniques from different categories
+- compare their effects under strictly controlled conditions
+
+## Controlled Setup
+
+All experiments use the exact same setup:
+
+- Fixed train / validation / test split  
+- Same MLP architecture  
+- Same optimizer (SGD)  
+- Same learning rate  
+- Same batch size  
+- Same epoch limit  
+- Same random seed  
+
+Only the **regularization method** changes between experiments.
+
+## Dataset Split
+
+We use a fixed subset of CIFAR-10:
+
+- Train: 15,000 samples  
+- Validation: 5,000 samples  
+- Test: 10,000 samples  
+
+The split is saved and reused across all experiments.
+
+## Model
+
+We use a fully connected MLP:
+
+- Input: 3072 (32×32×3 flattened)
+- Hidden layers: [1024, 512, 256]
+- Activation: ReLU
+
+Optional components:
+- Dropout
+- Batch Normalization
+
+No softmax is applied (handled by CrossEntropyLoss).
+
+---
+
+## Types of Regularization Used
+
+This branch covers multiple categories of regularization:
+
+### 1. Explicit Regularization (Penalty-based)
+- Directly adds a penalty term to the loss function
+
+**Example:**
+- L2 Regularization
+
+$$
+\mathcal{L} = \mathcal{L}_{CE} + \lambda \|w\|^2
+$$
+
+In this project:
+- Implemented explicitly in the loss
+- Interpreted as MAP with a Gaussian prior
+
+---
+
+### 2. Stochastic Regularization
+- Introduces randomness during training to prevent co-adaptation
+
+**Example:**
+- Dropout
+
+Effect:
+- Randomly disables neurons during training
+- Forces more robust feature learning
+
+---
+
+### 3. Implicit Regularization (Training Dynamics)
+- Does not modify the loss directly
+- Regularization emerges from the training process
+
+**Example:**
+- Early Stopping
+
+Effect:
+- Stops training before overfitting fully develops
+- Uses validation loss as a signal
+
+---
+
+### 4. Architectural / Normalization-based Regularization
+- Comes from model design rather than explicit penalties
+
+**Example:**
+- Batch Normalization
+
+Effect:
+- Stabilizes training
+- Can improve generalization indirectly
+
+---
+
+## Experiments
+
+1. **Baseline**
+   - No regularization
+   - Shows clear overfitting
+
+2. **Dropout**
+   - Stochastic regularization
+
+3. **Early Stopping**
+   - Implicit regularization
+
+4. **Batch Normalization**
+   - Architectural regularization
+
+5. **Dropout + BatchNorm**
+   - Combination of stochastic + architectural methods
+
+6. **L2 + Dropout (MAP Gaussian Prior)**
+   - Explicit + stochastic combination
+   - L2 implemented directly in loss:
+
+$$
+\mathcal{L}_{MAP} = \mathcal{L}_{CE} + \lambda \sum_i w_i^2
+$$
+
+Interpretation:
+- CrossEntropyLoss → negative log-likelihood  
+- L2 → Gaussian prior  
+
+---
+
+## Key Metrics
+
+Each experiment tracks:
+
+- Train / Validation / Test Loss  
+- Train / Validation / Test Accuracy  
+- Generalization Gap:
+  - Train − Validation  
+  - Train − Test  
+
+---
+
+## Structure
+src/            → reusable training and model code notebooks/      
+→ individual experiments splits/         
+→ fixed dataset split results/        
+→ figures and summary tables
+
+---
+
+## Key Insight
+
+Different regularization methods act in fundamentally different ways:
+
+- Explicit → constrains weights  
+- Stochastic → introduces noise  
+- Implicit → limits training dynamics  
+- Architectural → changes representation behavior  
+
+This branch compares all of them under identical conditions.
