@@ -125,7 +125,8 @@ beyza/
 │  ├─ 03_batchnorm.ipynb
 │  ├─ 04_dropout_batchnorm.ipynb
 │  ├─ 05_l2_map_gaussian_prior_dropout.ipynb
-│  └─ 06_comparison.ipynb
+│  ├─ 06_comparison.ipynb
+│  └─ 07_RUNall.ipynb
 │
 ├─ src/
 │  ├─ data.py
