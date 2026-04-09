@@ -881,6 +881,7 @@ DL-Project-One/
 │   └── *.md
 └── legacy/
     └── *.ipynb
+```
 > Some notebooks are fully modular and use the shared `src/` pipeline, while others are more self-contained for focused experimentation.
 
 ## Suggested Reading Order
