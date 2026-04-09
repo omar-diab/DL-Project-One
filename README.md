@@ -109,7 +109,8 @@ These metrics are used to compare how well each method improves generalization a
 DL-Project-One/
 │
 ├─ notebooks/
-│  ├─ reg_00_baseline.ipynb
+│  ├─ initial_00_baseline_full.ipynb
+│  ├─ reg_00_modular_baseline.ipynb
 │  ├─ reg_01_dropout.ipynb
 │  ├─ reg_02_early_stopping.ipynb
 │  ├─ reg_03_batchnorm.ipynb
@@ -118,10 +119,10 @@ DL-Project-One/
 │  ├─ reg_06_comparison.ipynb
 │  ├─ reg_07_run_all.ipynb
 │  ├─ reg_08_l1_l2_v2.ipynb
-│  ├─ opt_00_data_augmentation.ipynb
-│  ├─ opt_01_adversarial_training.ipynb
-│  ├─ final_00_full_combo_before_optimization.ipynb
-│  └─ final_01_optimization_final.ipynb
+│  ├─ reg_09_data_augmentation.ipynb
+│  ├─ reg_10_adversarial_training.ipynb
+│  ├─ reg_11_full_combo_before_optimization.ipynb
+│  └─ reg_12_optimization_final.ipynb
 │
 ├─ src/
 │  ├─ data.py
@@ -141,7 +142,6 @@ DL-Project-One/
 │  └─ tables/
 │
 ├─ legacy/
-│  ├─ adel_baseline_full.ipynb
 │  └─ fatima_l1_l2_old.ipynb
 │
 └─ README.md
