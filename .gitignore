@@ -1,6 +1,4 @@
-data/
-*.tar.gz
+.DS_Store
 __pycache__/
 .ipynb_checkpoints/
-results/figures/
-results/tables/
+*.pyc
