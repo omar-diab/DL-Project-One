@@ -848,7 +848,8 @@ That result is consistent with the later-stage project design, where optimizatio
 ```text
 DL-Project-One/
 ├── README.md
-├── report.md 
+├── report.md
+├── requirements.txt
 ├── batches/
 │   ├── batches.meta
 │   ├── data_batch_1
