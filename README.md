@@ -848,7 +848,18 @@ That result is consistent with the later-stage project design, where optimizatio
 ```text
 DL-Project-One/
 ├── README.md
-├── report.md / report.pdf
+├── report.md 
+├── batches/
+│   ├── batches.meta
+│   ├── data_batch_1
+│   ├── data_batch_2
+│   ├── data_batch_3
+│   ├── data_batch_4
+│   ├── data_batch_5
+│   ├── readme.html
+│   └── test_batch
+├── legacy/
+│   └── fatima_l1_l2_old.ipynb
 ├── notebooks/
 │   ├── reg_opt_00_baseline.ipynb
 │   ├── reg_00_modular_baseline.ipynb
@@ -864,6 +875,14 @@ DL-Project-One/
 │   ├── reg_10_adversarial_training.ipynb
 │   ├── reg_11_full_combo_before_optimization.ipynb
 │   └── opt_01_optimization_final.ipynb
+├── responsibilities/
+│   └── *.md
+├── results/
+│   ├── figures/
+│   └── tables/
+│   
+├── splits/
+│   └── fixed_cifar10_split.npz
 ├── src/
 │   ├── __init__.py
 │   ├── data.py
@@ -871,16 +890,7 @@ DL-Project-One/
 │   ├── early_stopping.py
 │   ├── train_eval.py
 │   └── plots.py
-├── splits/
-│   └── fixed_cifar10_split.npz
-├── results/
-│   ├── figures/
-│   ├── tables/
-│   └── histories/
-├── responsibilities/
-│   └── *.md
-└── legacy/
-    └── *.ipynb
+└── .gitignore
 ```
 > Some notebooks are fully modular and use the shared `src/` pipeline, while others are more self-contained for focused experimentation.
 
