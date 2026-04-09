@@ -20,7 +20,7 @@ As a result, the repository functions as both:
 - an **optimization study** built on top of a stronger regularized training pipeline.
 
 > **Note:** This `README.md` is intended to document the project **technically and methodologically**.  
-> A separate `report.md` / `report.pdf` should provide the deeper discussion, interpretation, and final academic analysis.
+> A separate `report.md` provides the deeper discussion, interpretation, and final academic analysis.
 
 ---
 
