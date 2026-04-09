@@ -1,4 +1,4 @@
-# DL Project One — Controlled Regularization and Optimization Study on CIFAR-10
+Controlled Regularization and Optimization Study on CIFAR-10
 
 ## Overview
 
