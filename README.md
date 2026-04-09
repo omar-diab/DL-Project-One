@@ -1,132 +1,127 @@
-# Regularization Ablation Study (CIFAR-10)
+# CIFAR-10 Regularization and Optimization Study
 
-This branch focuses on the regularization part of the project: analyzing how different regularization techniques affect an overfitting MLP baseline trained on CIFAR-10.
+This project investigates how different techniques affect the performance and generalization of an MLP trained on CIFAR-10.
 
-The main objective is to compare several regularization methods under a controlled setup, so that their effect on overfitting and generalization can be observed clearly and fairly.
+The repository is organized around two main experiment groups:
 
-## Scope of This Branch
+- **Regularization:** controlled ablation study on overfitting reduction
+- **Optimization / Robustness:** augmentation, adversarial training, and final combined experiments
 
-This branch is specifically responsible for the regularization analysis. Its role is to keep the training pipeline fixed and isolate the effect of different regularization strategies.
+The goal is to keep the project structure unified while preserving the distinct contribution of each experiment.
 
-Within this scope, the branch:
-- constructs an intentionally overfitting baseline,
-- applies selected regularization methods,
-- compares them under identical settings,
-- evaluates their impact on training, validation, and test performance.
+## Project Scope
+
+The project studies how different methods influence training behavior, overfitting, and test performance under a mostly shared setup.
+
+It includes:
+
+- an intentionally overfitting MLP baseline,
+- regularization-based experiments,
+- optimization / robustness-oriented experiments,
+- final combined experiments that build on earlier results.
 
 ## Controlled Experimental Setup
 
-To ensure a fair comparison, all experiments use the same configuration:
+To keep comparisons meaningful, the experiments are designed to reuse the same core pipeline as much as possible:
+
 - fixed train / validation / test split,
 - same MLP architecture,
-- same optimizer (SGD),
-- same learning rate,
-- same batch size,
-- same epoch limit,
-- same random seed.
+- same optimizer family,
+- same general training pipeline,
+- shared preprocessing and evaluation logic where applicable.
 
-This means the only factor that changes across experiments is the **regularization method**.
+Some optimization notebooks introduce additional training strategies, but the common project structure is preserved through the shared `src/` codebase.
 
 ## Dataset Split
 
-A fixed subset of CIFAR-10 is used throughout this branch:
+A fixed subset of CIFAR-10 is used across the project:
+
 - **Train:** 15,000 samples
 - **Validation:** 5,000 samples
 - **Test:** 10,000 samples
 
-The split is saved and reused across all experiments to preserve consistency and reproducibility.
+The split is stored in:
+
+- `splits/fixed_cifar10_split.npz`
+
+A single shared copy of the CIFAR-10 raw batch files is kept in:
+
+- `data/cifar-10-batches-py/`
 
 ## Model
 
-This branch uses a fully connected MLP with:
+The main model used in the project is a fully connected MLP with:
+
 - **Input dimension:** 3072
 - **Hidden layers:** [1024, 512, 256]
 - **Activation:** ReLU
 
 Optional components depending on the experiment:
+
 - Dropout
 - Batch Normalization
 
 The output layer does not include softmax, since it is handled by `CrossEntropyLoss`.
 
-## Regularization Methods Covered
+## Experiment Groups
 
-This branch examines regularization methods from multiple categories:
+### 1. Regularization Experiments
 
-### 1. Explicit Regularization
-- **L2 Regularization**
-- Implemented directly in the loss function
-- Interpreted as MAP estimation with a Gaussian prior
+These notebooks focus on reducing overfitting while keeping the baseline setting controlled.
 
-$$
-\mathcal{L}_{MAP} = \mathcal{L}_{CE} + \lambda \sum_i w_i^2
-$$
+Covered methods include:
 
-### 2. Stochastic Regularization
-- **Dropout**
-- Randomly deactivates neurons during training
-- Reduces co-adaptation between features
+- Baseline
+- Dropout
+- Early Stopping
+- Batch Normalization
+- Dropout + BatchNorm
+- L2 + Dropout (MAP Gaussian Prior)
+- L1 + L2
+- Comparison / run-all evaluation
 
-### 3. Implicit Regularization
-- **Early Stopping**
-- Stops training based on validation behavior
-- Limits overfitting through training dynamics
+### 2. Optimization / Robustness Experiments
 
-### 4. Architectural / Normalization-Based Regularization
-- **Batch Normalization**
-- Stabilizes optimization and may improve generalization indirectly
+These notebooks extend the project with training strategies beyond the regularization ablation setting.
 
-## Experiments Included
+Covered methods include:
 
-The following experiment notebooks are included in this branch:
-
-1. **Baseline**
-   - no regularization
-   - intended to show clear overfitting
-
-2. **Dropout**
-   - stochastic regularization
-
-3. **Early Stopping**
-   - implicit regularization
-
-4. **Batch Normalization**
-   - architectural regularization
-
-5. **Dropout + BatchNorm**
-   - combined stochastic and architectural regularization
-
-6. **L2 + Dropout (MAP Gaussian Prior)**
-   - combined explicit and stochastic regularization
-
-7. **Comparison**
-   - consolidated evaluation of all experiment results
+- Data Augmentation
+- Adversarial Training
+- Final combined experiment before optimization
+- Final optimization experiment
 
 ## Evaluation
 
-Each experiment tracks:
+Experiments track:
+
 - train / validation / test loss,
 - train / validation / test accuracy,
 - generalization gap:
   - train − validation,
   - train − test.
 
-These metrics are used to compare how effectively each method reduces overfitting.
+These metrics are used to compare how well each method improves generalization and reduces overfitting.
 
-## Branch Structure
+## Repository Structure
 
-``` id="branch-structure"
-beyza/
+```text
+DL-Project-One/
 │
 ├─ notebooks/
-│  ├─ 00_baseline.ipynb
-│  ├─ 01_dropout.ipynb
-│  ├─ 02_early_stopping.ipynb
-│  ├─ 03_batchnorm.ipynb
-│  ├─ 04_dropout_batchnorm.ipynb
-│  ├─ 05_l2_map_gaussian_prior_dropout.ipynb
-│  ├─ 06_comparison.ipynb
-│  └─ 07_RUNall.ipynb
+│  ├─ reg_00_baseline.ipynb
+│  ├─ reg_01_dropout.ipynb
+│  ├─ reg_02_early_stopping.ipynb
+│  ├─ reg_03_batchnorm.ipynb
+│  ├─ reg_04_dropout_batchnorm.ipynb
+│  ├─ reg_05_l2_map_gaussian_prior_dropout.ipynb
+│  ├─ reg_06_comparison.ipynb
+│  ├─ reg_07_run_all.ipynb
+│  ├─ reg_08_l1_l2_v2.ipynb
+│  ├─ opt_00_data_augmentation.ipynb
+│  ├─ opt_01_adversarial_training.ipynb
+│  ├─ final_00_full_combo_before_optimization.ipynb
+│  └─ final_01_optimization_final.ipynb
 │
 ├─ src/
 │  ├─ data.py
@@ -135,6 +130,9 @@ beyza/
 │  ├─ train_eval.py
 │  └─ plots.py
 │
+├─ data/
+│  └─ cifar-10-batches-py/
+│
 ├─ splits/
 │  └─ fixed_cifar10_split.npz
 │
@@ -142,16 +140,8 @@ beyza/
 │  ├─ figures/
 │  └─ tables/
 │
+├─ legacy/
+│  ├─ adel_baseline_full.ipynb
+│  └─ fatima_l1_l2_old.ipynb
+│
 └─ README.md
-```
----
-
-## Key Insight
-
-Different regularization methods act in fundamentally different ways:
-
-Explicit → constrains weights
-Stochastic → introduces noise
-Implicit → limits training dynamics
-Architectural → changes representation behavior
-This branch compares all of them under identical conditions.
