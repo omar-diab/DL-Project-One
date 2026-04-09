@@ -1,73 +1,73 @@
-Controlled Regularization and Optimization Study on CIFAR-10
+# Controlled Regularization and Optimization Study on CIFAR-10
 
 ## Overview
 
-This repository presents a **controlled deep learning study** on **regularization**, **robustness**, and **optimization** using an intentionally overfitting multilayer perceptron (MLP) on **CIFAR-10**.
+This repository presents a **controlled deep learning study** on **regularization**, **robustness**, and **optimization** using an intentionally overfitting multilayer perceptron (MLP) trained on **CIFAR-10**.
 
-The project was designed as a **methodology-first experimental pipeline** rather than a generic image classification project. The main idea is to keep the backbone, split, and core training protocol as fixed as possible, then introduce methods step by step so that their effect can be isolated and interpreted clearly.
+Rather than treating this as a generic image classification project, the repository is organized as a **methodology-first experimental pipeline**. The central idea is to keep the backbone, split, and core training protocol as fixed as possible, then introduce methods step by step so that their effects can be isolated and interpreted clearly.
 
-Instead of jumping directly to a “best model,” the project follows a layered structure:
+Instead of jumping directly to a single “best model,” the project follows a layered progression:
 
-1. build an overfitting baseline,
-2. compare standard regularization methods under identical settings,
+1. construct an overfitting baseline,
+2. compare standard regularization methods under identical conditions,
 3. extend the analysis with additional regularization techniques,
-4. combine multiple techniques into a stronger integrated setup,
-5. and finally optimize that stronger setup through optimizer / learning-rate / scheduler comparisons.
+4. combine multiple methods into a stronger integrated setup,
+5. and finally optimize that stronger setup through optimizer, learning-rate, and scheduler comparisons.
 
-This means the repository functions as both:
+As a result, the repository functions as both:
 
 - a **regularization ablation study**, and
-- an **optimization study** built on top of a stronger regularized pipeline.
+- an **optimization study** built on top of a stronger regularized training pipeline.
 
-> **Note:** This `README.md` is meant to document the project technically and methodologically.  
-> A separate `report.md` is intended for deeper discussion, interpretation, and final academic analysis.
+> **Note:** This `README.md` is intended to document the project **technically and methodologically**.  
+> A separate `report.md` / `report.pdf` should provide the deeper discussion, interpretation, and final academic analysis.
 
 ---
 
 ## Project Goals
 
-The project does not aim only to maximize final test accuracy. Its main objective is to understand:
+The project is not designed merely to maximize final test accuracy. Its primary objective is to understand:
 
 - how different regularization methods affect **overfitting**,
 - which methods improve **validation and test behavior**,
 - how methods with different mechanisms behave under the same setup,
 - how robustness-oriented training differs from classical regularization,
 - what happens when several methods are combined,
-- and how optimizer choice changes **convergence**, **stability**, and **generalization**.
+- and how optimizer choice influences **convergence**, **stability**, and **generalization**.
 
 So the guiding question is not only **“what works?”** but also:
 
 - **why does it help?**
-- **what kind of problem does it address?**
-- **how does it fit into the full training pipeline?**
+- **what specific issue does it address?**
+- **how does it fit into the larger training pipeline?**
 
 ---
 
 ## Methodological Design
 
-The strongest design choice in this repository is the use of a **controlled comparison framework**.
+One of the strongest aspects of this repository is the use of a **controlled comparison framework**.
 
-For the main regularization branch, the following are held fixed as much as possible:
+For the main regularization branch, the following factors are kept fixed as much as possible:
 
-- same dataset: **CIFAR-10**
-- same split: **15,000 train / 5,000 validation / 10,000 test**
-- same MLP backbone
-- same hidden dimensions
-- same batch size
-- same epoch budget
-- same random seed
-- same train / validation / test protocol
+- the dataset: **CIFAR-10**
+- the split: **15,000 train / 5,000 validation / 10,000 test**
+- the MLP backbone
+- the hidden-layer dimensions
+- the batch size
+- the epoch budget
+- the random seed
+- the train / validation / test evaluation protocol
 
 This makes the **regularization method itself** the primary changing factor.
 
-Later notebooks intentionally move beyond the initial minimal setup, but still do so in a structured order:
+Later notebooks intentionally move beyond the initial minimal setup, but they still do so in a structured progression:
 
 - first by studying isolated regularizers,
 - then by adding more advanced methods,
 - then by building a **full-combo regularized configuration**,
 - and finally by tuning optimization on top of that configuration.
 
-This staged design makes the project much stronger than a simple collection of loosely related notebooks.
+This staged design makes the repository much stronger than a loose collection of independent experiments.
 
 ---
 
@@ -85,9 +85,9 @@ The split is fixed using:
 
 - **seed = 42**
 
-This fixed split is reused across experiments so that performance changes come from the method itself rather than sampling variation.
+This split is reused across experiments so that performance differences can be attributed to the method itself rather than to sampling variation.
 
-In the modular regularization branch, the split is saved and reused via:
+In the modular regularization branch, the split is saved and reused through:
 
 - `splits/fixed_cifar10_split.npz`
 
@@ -108,19 +108,19 @@ The shared backbone is a fully connected **MLP** with:
 - **Activation:** `ReLU`
 - **Output:** 10 logits for CIFAR-10 classes
 
-Optional components, depending on the experiment:
+Depending on the experiment, the architecture may optionally include:
 
 - **Dropout**
 - **Batch Normalization**
 
-### Parameter scale
+### Parameter Scale
 
 The model is intentionally large relative to the reduced training subset:
 
 - Plain MLP (without BatchNorm): approximately **3,805,450** trainable parameters
 - BatchNorm-enabled variant: approximately **3,809,034** trainable parameters
 
-This is large enough to make overfitting clearly visible on the fixed 15k training subset.
+This scale is large enough to make overfitting clearly visible on the fixed 15k training subset.
 
 ---
 
@@ -141,10 +141,10 @@ This setup is reused across:
 - dropout,
 - early stopping,
 - batch normalization,
-- dropout + batch norm,
+- dropout + batch normalization,
 - and L2 + dropout.
 
-As a result, the only meaningful changing factor in these notebooks is the regularization strategy itself.
+As a result, the regularization strategy is the only meaningful changing factor in these notebooks.
 
 ---
 
@@ -163,7 +163,7 @@ Across the repository, experiments track combinations of:
 - summary plots
 - comparison tables
 
-For this project, accuracy alone is not enough. A method is also evaluated by:
+For this project, accuracy alone is not sufficient. A method is also evaluated by:
 
 - how much it reduces overfitting,
 - how stable its validation behavior is,
@@ -174,7 +174,7 @@ For this project, accuracy alone is not enough. A method is also evaluated by:
 
 ## Implemented Methods and Notebook Progression
 
-The project progresses notebook by notebook, with each notebook having a distinct methodological role.
+The repository progresses notebook by notebook, with each notebook serving a distinct methodological role.
 
 ---
 
@@ -182,7 +182,7 @@ The project progresses notebook by notebook, with each notebook having a distinc
 
 This notebook constructs the plain overfitting baseline and demonstrates why regularization is necessary.
 
-Configuration:
+**Configuration**
 
 - MLP `[1024, 512, 256]`
 - no dropout
@@ -194,21 +194,21 @@ Configuration:
 - batch size: `128`
 - max epochs: `50`
 
-Purpose:
+**Purpose**
 
 - establish a clean reference point,
 - show severe overfitting clearly,
 - quantify the generalization gap before applying any correction.
 
-This notebook is important because it proves that the problem setup is non-trivial: the model fits the training subset very well but generalizes poorly without regularization.
+This notebook is important because it shows that the setup is non-trivial: the model fits the training subset strongly but generalizes poorly without regularization.
 
 ---
 
 ### `reg_00_modular_baseline.ipynb` — Modular Branch Baseline
 
-This is the branch-style version of the same baseline idea, built on top of the reusable `src/` pipeline.
+This is the branch-style version of the baseline, built on top of the reusable `src/` pipeline.
 
-Its purpose is to create the same no-regularization reference point under the modular experimental framework used by the regularization ablation notebooks.
+Its role is to reproduce the same no-regularization reference point under the modular framework used by the regularization ablation notebooks.
 
 This notebook establishes the **fixed conditions** for the main ablation branch:
 
@@ -225,7 +225,7 @@ This notebook establishes the **fixed conditions** for the main ablation branch:
 
 This notebook introduces **dropout** as the first stochastic regularization method.
 
-Configuration:
+**Configuration**
 
 - dropout enabled
 - dropout probability: `0.5`
@@ -235,7 +235,7 @@ Configuration:
 - optimizer remains `SGD`
 - learning rate remains `0.01`
 
-Purpose:
+**Purpose**
 
 - reduce co-adaptation between hidden units,
 - inject stochastic noise into the representation,
@@ -249,7 +249,7 @@ This notebook isolates a purely stochastic regularization mechanism.
 
 This notebook studies **early stopping** as an implicit regularizer.
 
-Configuration:
+**Configuration**
 
 - no dropout
 - no batch normalization
@@ -258,34 +258,34 @@ Configuration:
   - `patience = 5`
   - `min_delta = 1e-4`
 
-Purpose:
+**Purpose**
 
 - stop training when validation loss stops improving,
 - prevent harmful late-stage memorization,
-- reduce overfitting through training dynamics rather than weight constraints or noise injection.
+- reduce overfitting through training dynamics rather than parameter penalties or injected noise.
 
-This notebook is important because it shows that regularization does not always mean “change the model” or “add a penalty”; it can also mean **controlling training duration**.
+This notebook is especially useful because it shows that regularization can also be achieved by **controlling the training process itself**.
 
 ---
 
 ### `reg_03_batchnorm.ipynb` — Batch Normalization
 
-This notebook studies **batch normalization** as an architectural / optimization-related regularizer.
+This notebook studies **batch normalization** as an architectural and optimization-related regularizer.
 
-Configuration:
+**Configuration**
 
 - batch norm enabled
 - no dropout
 - no early stopping
 - no explicit weight decay
 
-Purpose:
+**Purpose**
 
 - stabilize hidden activation distributions,
 - smooth optimization,
 - observe whether representation stabilization indirectly improves generalization.
 
-This method occupies a different conceptual category from L1/L2, dropout, or early stopping, which makes it especially useful in a methodology-oriented comparison.
+This method occupies a different conceptual category from L1/L2, dropout, or early stopping, which makes it valuable in a methodology-oriented comparison.
 
 ---
 
@@ -296,7 +296,7 @@ This notebook studies the interaction between:
 - stochastic regularization (`Dropout`)
 - architectural / normalization-based regularization (`BatchNorm`)
 
-Configuration:
+**Configuration**
 
 - dropout enabled
 - dropout probability: `0.5`
@@ -304,7 +304,7 @@ Configuration:
 - no early stopping
 - no explicit L2
 
-Purpose:
+**Purpose**
 
 - test whether two methods with different mechanisms complement each other,
 - compare the combination directly against each method in isolation.
@@ -317,16 +317,16 @@ This is one of the first notebooks where the project moves from isolated methods
 
 This notebook introduces explicit **L2 regularization** together with dropout and connects the implementation to the **MAP estimation** view.
 
-Training objective:
+**Training objective**
 
 `L_MAP = L_CE + λ Σ_i w_i^2`
 
-Interpretation:
+**Interpretation**
 
 - `CrossEntropyLoss` corresponds to the negative log-likelihood,
 - the L2 penalty corresponds to the negative log-prior under a zero-mean Gaussian prior.
 
-Configuration:
+**Configuration**
 
 - dropout enabled
 - dropout probability: `0.5`
@@ -334,13 +334,13 @@ Configuration:
 - no batch norm
 - no early stopping
 
-Purpose:
+**Purpose**
 
 - connect theory to implementation,
 - treat L2 not just as a coding trick but as an explicit probabilistic regularizer,
-- compare explicit parameter constraint + stochastic masking under the same setup.
+- compare explicit parameter control and stochastic masking under the same setup.
 
-This notebook is particularly important for technical depth because it links the code to a statistical interpretation.
+This notebook is particularly important for technical depth because it connects the code to a statistical interpretation.
 
 ---
 
@@ -348,7 +348,7 @@ This notebook is particularly important for technical depth because it links the
 
 This notebook consolidates the results of the core regularization branch.
 
-Compared experiments:
+**Compared experiments**
 
 - Baseline
 - Dropout
@@ -357,7 +357,7 @@ Compared experiments:
 - Dropout + BatchNorm
 - L2 + Dropout
 
-Tracked metrics include:
+**Tracked metrics**
 
 - training loss
 - validation loss
@@ -367,9 +367,9 @@ Tracked metrics include:
 - test accuracy
 - generalization gap
 
-Purpose:
+**Purpose**
 
-- move from individual notebook outputs to a true ablation-style comparison,
+- move from individual notebook outputs to a genuine ablation-style comparison,
 - evaluate how different regularization families behave under identical conditions.
 
 ---
@@ -387,10 +387,10 @@ It defines experiment configurations such as:
 - dropout + batch norm
 - L2 + dropout (`weight_decay = 1e-4`)
 
-Purpose:
+**Purpose**
 
-- avoid manual rerunning of each notebook one by one,
-- make the branch more reproducible,
+- avoid rerunning each notebook manually,
+- improve reproducibility,
 - support batch-style execution and result collection.
 
 ---
@@ -403,19 +403,19 @@ This notebook deepens the project’s explicit regularization analysis by direct
 - L1 regularization
 - L2 regularization
 
-Shared setup:
+**Shared setup**
 
 - optimizer: `SGD`
 - learning rate: `0.01`
 - max epochs: `50`
 - seed: `42`
 
-Main regularization settings:
+**Main regularization settings**
 
 - `L1_LAMBDA = 1e-4`
 - `L2_WEIGHT_DECAY = 1e-3`
 
-Additional follow-up:
+**Additional follow-up**
 
 - stronger L2 experiment with:
   - `L2_WEIGHT_DECAY = 5e-3`
@@ -428,7 +428,7 @@ This notebook goes beyond simple accuracy comparison and also analyzes:
 - sparsity behavior
 - fraction of near-zero weights
 
-Purpose:
+**Purpose**
 
 - compare two explicit norm penalties directly,
 - study the trade-off between sparsity and performance,
@@ -440,15 +440,15 @@ This is one of the most methodologically rich notebooks in the project because i
 
 ### `reg_09_data_augmentation.ipynb` — Data Augmentation as Regularization
 
-This notebook treats **data augmentation** as a regularization mechanism by modifying the training set only while keeping validation and test clean.
+This notebook treats **data augmentation** as a regularization mechanism by modifying the training set only while keeping validation and test sets clean.
 
-Training-time augmentation pipeline:
+**Training-time augmentation pipeline**
 
 - `RandomHorizontalFlip(p=0.5)`
 - `RandomCrop(32, padding=4)`
 - `ColorJitter(brightness=0.2, contrast=0.2)`
 
-Controlled setup:
+**Controlled setup**
 
 - model: MLP `[1024, 512, 256]`
 - optimizer: `SGD`
@@ -457,13 +457,13 @@ Controlled setup:
 - batch size: `128`
 - seed: `42`
 
-Purpose:
+**Purpose**
 
 - increase effective training diversity,
 - discourage memorization,
 - reduce the generalization gap without changing the parameter-space penalty.
 
-This notebook expands the project beyond classical weight-based regularization and into **input-space regularization**.
+This notebook extends the project beyond classical weight-based regularization and into **input-space regularization**.
 
 ---
 
@@ -471,7 +471,7 @@ This notebook expands the project beyond classical weight-based regularization a
 
 This notebook studies **robustness-oriented regularization** using **FGSM**.
 
-Method summary:
+**Method summary**
 
 - adversarial examples are generated during training,
 - the training objective combines:
@@ -480,7 +480,7 @@ Method summary:
 - perturbation magnitude:
   - `epsilon = 0.03`
 
-Controlled setup:
+**Controlled setup**
 
 - model: MLP `[1024, 512, 256]`
 - optimizer: `SGD`
@@ -488,24 +488,24 @@ Controlled setup:
 - max epochs: `50`
 - seed: `42`
 
-Evaluation includes:
+**Evaluation**
 
 - clean test accuracy
 - adversarial test accuracy
 
-Purpose:
+**Purpose**
 
 - study how adversarial training affects generalization,
 - test whether robustness-oriented training behaves like another form of regularization,
-- compare it with more classical anti-overfitting techniques.
+- compare it with more classical anti-overfitting methods.
 
-This notebook is valuable because it extends the project from standard generalization to **robust generalization**.
+This notebook extends the project from standard generalization to **robust generalization**.
 
 ---
 
 ### `reg_11_full_combo_before_optimization.ipynb` — Full Combined Setup
 
-This notebook is the bridge between the regularization study and the optimization study.
+This notebook acts as the bridge between the regularization study and the optimization study.
 
 It combines multiple methods into one integrated training pipeline.
 
@@ -539,7 +539,7 @@ Training augmentation in this notebook includes:
 - scheduler:
   - `CosineAnnealingLR`
 
-Important detail:
+**Important detail**
 
 Unlike the standalone FGSM notebook, this full-combo setup does **not** use a strict 50/50 clean + adversarial loss on every batch. Instead, adversarial batches are injected with probability:
 
@@ -547,13 +547,13 @@ Unlike the standalone FGSM notebook, this full-combo setup does **not** use a st
 
 So this notebook implements a **lighter adversarial regime** inside a richer multi-regularizer pipeline.
 
-Purpose:
+**Purpose**
 
 - combine complementary regularization mechanisms,
 - test whether isolated gains can be accumulated,
 - prepare a strong base configuration for optimizer tuning.
 
-This notebook is one of the most important ones in the repository because it represents the transition from **analysis of parts** to **construction of a strong full system**.
+This is one of the most important notebooks in the repository because it marks the shift from **analyzing individual parts** to **building a strong full system**.
 
 ---
 
@@ -574,7 +574,7 @@ The fixed full-combo techniques include:
 - early stopping: on
   - `patience = 10`
 
-### Optimization search process
+### Optimization Search Process
 
 #### Step A — Fast optimizer comparison
 
@@ -607,19 +607,19 @@ Schedulers tested:
 
 After selecting the best optimizer / learning rate / scheduler combination, the notebook launches the final longer training run.
 
-Purpose:
+**Purpose**
 
 - move beyond regularization and study training dynamics directly,
 - identify which optimizer family works best for the strong combined pipeline,
-- understand the effect of scheduler choice on convergence and final accuracy.
+- understand how scheduler choice affects convergence and final accuracy.
 
-This notebook completes the project by turning the strongest regularized setup into a fully tuned training pipeline.
+This notebook completes the project by turning the strongest regularized setup into a more fully tuned training pipeline.
 
 ---
 
 ## Key Reported Results from Saved Notebook Outputs
 
-Since the repository contains multiple stages and some later notebooks rerun related ideas under different conditions, results belong to their own notebook contexts. The tables below summarize **reported outputs saved inside the notebooks**.
+Since the repository contains multiple stages and some later notebooks revisit related ideas under slightly different conditions, results belong to their own notebook contexts. The tables below summarize the **reported outputs saved inside the notebooks**.
 
 ---
 
@@ -629,11 +629,11 @@ Since the repository contains multiple stages and some later notebooks rerun rel
 |---|---:|---:|---:|---:|---:|
 | Baseline (No Regularization) | 85.81% | 44.50% | 45.82% | 41.31% | 39.99% |
 
-Interpretation:
+**Interpretation**
 
 - the MLP fits the training subset very strongly,
 - but validation and test performance remain much lower,
-- making the baseline a valid starting point for a regularization study.
+- which makes the baseline a valid starting point for a regularization study.
 
 ---
 
@@ -652,7 +652,7 @@ Additional sparsity result reported in the same notebook:
   - L1: **78.2%**
   - L2: **53.5%**
 
-Interpretation:
+**Interpretation**
 
 - **L1** substantially reduces the generalization gap,
 - but it also reduces train / validation / test accuracy,
@@ -667,7 +667,7 @@ Interpretation:
 |---|---:|---:|---:|---:|
 | Data Augmentation | 47.75% | 44.68% | 46.02% | 3.07% |
 
-Interpretation:
+**Interpretation**
 
 - augmentation sharply reduces the generalization gap,
 - training accuracy becomes much lower than the baseline,
@@ -683,13 +683,13 @@ This is one of the clearest examples in the repository of a method that sacrific
 |---|---:|---:|---:|---:|---:|---:|
 | FGSM Adversarial Training | 70.95% | 46.00% | 48.05% | 31.19% | 24.95% | 16.86% |
 
-Interpretation:
+**Interpretation**
 
 - adversarial training improves robustness awareness,
 - but by itself it does not produce the strongest overall generalization profile in the repository,
 - and the clean-to-adversarial degradation remains substantial.
 
-So in this project, adversarial training becomes more effective when used as part of a broader combined pipeline.
+In this project, adversarial training becomes more effective when used as part of a broader combined pipeline.
 
 ---
 
@@ -699,13 +699,13 @@ So in this project, adversarial training becomes more effective when used as par
 |---|---:|---:|---:|---:|---:|---:|
 | Full Combo + AdamW + CosineAnnealingLR | 58.73% | 54.92% | 55.78% | 43.83% | 3.81% | 2.95% |
 
-Interpretation:
+**Interpretation**
 
 - this is one of the strongest overall configurations in the repository,
 - it combines strong validation / test performance with very small generalization gaps,
 - and it improves adversarial accuracy substantially compared with standalone FGSM training.
 
-This supports the main methodological lesson of the project: **complementary methods work better together than in isolation**.
+This supports one of the main methodological lessons of the project: **complementary methods work better together than in isolation**.
 
 ---
 
@@ -748,7 +748,7 @@ Selected scheduler by validation performance: **StepLR**
 |---|---:|---:|---:|---:|---:|---:|
 | AdamW + `lr=0.001` + StepLR on full combo | 60.89% | 54.00% | 54.87% | 43.35% | 6.89% | 6.02% |
 
-Interpretation:
+**Interpretation**
 
 - `AdamW` is the strongest optimizer among the tested candidates for the full-combo regime,
 - the final tuned setup remains much stronger than the plain baseline,
@@ -771,7 +771,7 @@ This creates a very large generalization gap of around **41%**, confirming that 
 
 ### 2. Different regularizers help through different mechanisms
 
-The project shows that regularization is not one single phenomenon.
+The project shows that regularization is not a single phenomenon.
 
 Different methods act in different spaces:
 
@@ -782,7 +782,7 @@ Different methods act in different spaces:
 - **Data augmentation** acts in input space,
 - **Adversarial training** regularizes through hard perturbed examples.
 
-This is why the repository is organized as a method comparison rather than a single benchmark race.
+This is why the repository is organized as a method comparison rather than as a single benchmark race.
 
 ---
 
@@ -813,7 +813,7 @@ So although it lowers training accuracy, it acts as a very strong anti-overfitti
 
 ### 5. Adversarial training alone helps robustness, but combination is stronger
 
-The standalone FGSM notebook improves robustness awareness, but its final adversarial accuracy is still lower than the adversarial accuracy achieved by the later full-combo setup.
+The standalone FGSM notebook improves robustness awareness, but its final adversarial accuracy remains lower than the adversarial accuracy achieved by the later full-combo setup.
 
 This suggests that adversarial training works best in this project as part of a broader regularized pipeline rather than as a standalone fix.
 
@@ -828,7 +828,7 @@ The full-combo pipeline achieves:
 - **43.83% adversarial accuracy**
 - and very small train-val / train-test gaps
 
-This is one of the central conclusions of the project:
+This supports one of the central conclusions of the project:
 
 > strong generalization in this setup does not come from a single trick,  
 > but from combining complementary regularization mechanisms in a principled way.
@@ -931,7 +931,7 @@ For the modular branch notebooks, reusable code lives under:
 - `src/train_eval.py`
 - `src/plots.py`
 
-This makes the regularization branch reproducible and easier to maintain.
+This makes the regularization branch more reproducible and easier to maintain.
 
 ## Why This Repository Is Methodologically Strong
 
@@ -948,7 +948,7 @@ It does not stop at one stage. Instead, it:
 - builds a stronger integrated pipeline,
 - and then tunes optimization systematically.
 
-So the repository is not just a set of experiments. It is a structured argument:
+So the repository is not just a set of experiments. It is a structured experimental argument:
 
 **baseline → isolated regularizers → extended regularizers → full combo → optimization tuning**
 
