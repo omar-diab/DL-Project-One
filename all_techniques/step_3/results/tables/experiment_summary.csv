@@ -1,7 +1,0 @@
-Experiment,Final Train Loss,Final Val Loss,Final Test Loss,Final Train Acc,Final Val Acc,Final Test Acc,Gap (Train-Val),Gap (Train-Test),Explicit L2,Lambda / Weight Decay,Best Epoch,Best Val Loss
-Baseline,0.3895,2.0653,2.0362,87.38,45.46,46.6,41.92,40.78,False,0.0,,
-Dropout,1.0738,1.4694,1.4398,62.55,47.86,49.13,14.69,13.42,False,0.0,,
-EarlyStopping,1.1465,1.5167,1.4953,60.13,47.42,47.68,12.71,12.45,False,0.0,23.0,1.5167
-BatchNorm,0.1135,2.5075,2.4817,96.79,43.46,43.49,53.33,53.3,False,0.0,,
-Dropout + BatchNorm,0.8683,1.4374,1.4093,70.05,49.66,50.3,20.39,19.75,False,0.0,,
-L2 (MAP Gaussian Prior) + Dropout,1.0679,1.4635,1.4337,62.87,47.94,49.13,14.93,13.74,True,0.0001,,
