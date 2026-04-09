@@ -1,3 +1,7 @@
-all_techniques/data/cifar-10-python.tar.gz
-*.tar.gz
+data/
 **/data/*
+*.tar.gz
+__pycache__/
+.ipynb_checkpoints/
+results/figures/
+results/tables/
