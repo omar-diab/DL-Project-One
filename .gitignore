@@ -1,0 +1,6 @@
+data/
+*.tar.gz
+__pycache__/
+.ipynb_checkpoints/
+results/figures/
+results/tables/
