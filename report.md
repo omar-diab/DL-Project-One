@@ -29,8 +29,7 @@ Overall, the project is therefore guided by two complementary questions: **(1) w
 ### 1.3 Scope of the study
 - Main focus: regularization ablation study
 - Secondary extension: optimization study
-- Mention that the optimization section is an extension built on top of the stronger regularized setup, not a separate unrelated task.
-
+  
 ---
 
 ## 2. Methodological Framing
@@ -40,8 +39,6 @@ Overall, the project is therefore guided by two complementary questions: **(1) w
 A controlled study was necessary because the main goal of this project was not simply to report the highest achieved accuracy, but to determine **how and why specific regularization methods change model behavior**. If several experimental factors are modified at the same time, such as the optimizer, model capacity, data split, training duration, or regularization strategy, then any observed performance difference becomes difficult to interpret. In that case, it is no longer clear whether an improvement comes from the regularization method itself or from another unrelated design choice.
 
 For this reason, the project was deliberately organized around a controlled comparison framework in which the core training conditions were kept fixed and only the target method was varied whenever possible. This design made it possible to isolate the effect of each regularization strategy on overfitting, generalization, and training stability, which is far more informative than a loose collection of unrelated experiments. Such a setup is especially important in a project whose purpose is methodological analysis rather than broad benchmark-style experimentation. :contentReference[oaicite:1]{index=1}
-
-A controlled study was also necessary because this directly matches the expectations defined for the course project. The project announcement explicitly states that broad and superficial work is not desired, and instead emphasizes methodological rigor, technical depth, and explaining exactly why a particular approach was selected over alternatives. :contentReference[oaicite:2]{index=2} In the same direction, the proposed regularization project was originally framed as a controlled ablation study in which the model architecture and experimental setup remain fixed while regularization methods are compared systematically. :contentReference[oaicite:3]{index=3} Since the course itself treats regularization and optimization as structured technical topics rather than isolated tricks, a controlled design was the most appropriate way to translate the course material into a coherent project methodology. :contentReference[oaicite:4]{index=4}
 
 More broadly, the controlled setup strengthened the scientific interpretability of the project. By fixing the split, architecture, optimizer, learning rate, batch size, epoch budget, and seed in the main regularization branch, the analysis could focus on the actual mechanism under study. This allowed the project to answer not only whether a method improved results, but also what kind of improvement it produced: reduced generalization gap, improved validation behavior, better robustness, or more stable convergence. In this sense, the controlled study was not only a design preference, but the foundation that made the entire analysis meaningful.
 
