@@ -224,23 +224,29 @@ The expected effect of L2 was a more controlled parameter distribution, reduced 
 ---
 ## 5.2 Combined regularization methods
 
-### 5.2.1 Dropout + BatchNorm
+## 5.2.1 Dropout + BatchNorm
 
-After evaluating individual methods in isolation, the project moved to controlled combination studies in order to examine whether methods with different mechanisms could complement one another. The first such combination was **Dropout + BatchNorm**, which brings together stochastic regularization and architectural normalization. This pairing was methodologically important because it allowed the study to move beyond the question of whether an individual method works and toward the question of whether distinct regularization mechanisms can reinforce one another under the same training setup. :contentReference[oaicite:10]{index=10}
+After evaluating individual methods in isolation, the project moved to controlled combination studies in order to examine whether methods with different mechanisms could complement one another. The first such combination was **Dropout + BatchNorm**, which brings together stochastic regularization and architectural normalization. This pairing was methodologically important because it allowed the study to move beyond the question of whether an individual method works and toward the question of whether distinct regularization mechanisms can reinforce one another under the same training setup.
 
-In this notebook, dropout was enabled with **dropout probability = 0.5** and batch normalization was activated in the model, while early stopping and explicit L2 regularization remained disabled. The rest of the experimental setup remained unchanged, preserving the controlled-comparison logic of the project. By keeping the data split, backbone, optimizer, learning rate, batch size, and epoch budget fixed, the experiment isolated the effect of the combination itself rather than introducing multiple unrelated changes. 
+In this notebook, dropout was enabled with **dropout probability = 0.5** and batch normalization was activated in the model, while early stopping and explicit L2 regularization remained disabled. The rest of the experimental setup remained unchanged, preserving the controlled-comparison logic of the project. By keeping the data split, backbone, optimizer, learning rate, batch size, and epoch budget fixed, the experiment isolated the effect of the combination itself rather than introducing multiple unrelated changes.
 
-The motivation for this combination was that dropout and batch normalization operate through different mechanisms: dropout injects stochastic variation into hidden activations, whereas batch normalization stabilizes activation statistics and training dynamics. If these effects are complementary rather than redundant, then combining them may improve validation behavior and reduce overfitting more effectively than either method alone. For that reason, this notebook marks an important transition in the project from isolated regularization analysis to **interaction analysis between regularization families**. 
+The motivation for this combination was that dropout and batch normalization operate through different mechanisms: dropout injects stochastic variation into hidden activations, whereas batch normalization stabilizes activation statistics and training dynamics. If these effects are complementary rather than redundant, then combining them may improve validation behavior and reduce overfitting more effectively than either method alone.
+
+The observed results support this interpretation. Compared with batch normalization alone, the combined setup produced substantially better validation and test behavior and a much smaller generalization gap. It also outperformed the baseline clearly and achieved the strongest validation and test accuracy within the core regularization branch. This suggests that normalization became more useful when paired with a stronger anti-overfitting mechanism, and that stochastic regularization and architectural stabilization can indeed work productively together.
 
 ---
 
-### 5.2.2 L2 + Dropout
+## 5.2.2 L2 + Dropout
 
-The second controlled combination in the core regularization branch was **L2 + Dropout**, implemented in the notebook that also framed L2 through the MAP / Gaussian prior interpretation. This combination was selected because it joins two conceptually different forms of regularization: an **explicit parameter constraint** and a **stochastic hidden-representation regularizer**. As a result, it provided a natural test of whether regularization methods acting in different spaces could produce complementary effects. 
+The second controlled combination in the core regularization branch was **L2 + Dropout**, implemented in the notebook that also framed L2 through the MAP / Gaussian prior interpretation. This combination was selected because it joins two conceptually different forms of regularization: an **explicit parameter constraint** and a **stochastic hidden-representation regularizer**. As a result, it provided a natural test of whether regularization methods acting in different spaces could produce complementary effects.
 
-The configuration preserved dropout with **probability = 0.5** and introduced L2 regularization through **weight_decay = 1e-4**, while batch normalization and early stopping remained disabled. The rest of the training pipeline stayed fixed, maintaining the same controlled setup used throughout the early regularization branch. This was methodologically important because it meant that the effect of the combination could be interpreted directly against the baseline and the single-method notebooks. 
+The configuration preserved dropout with **probability = 0.5** and introduced L2 regularization through **weight_decay = 1e-4**, while batch normalization and early stopping remained disabled. The rest of the training pipeline stayed fixed, maintaining the same controlled setup used throughout the early regularization branch. This was methodologically important because it meant that the effect of the combination could be interpreted directly against the baseline and the single-method notebooks.
 
-The value of this notebook lies in the fact that it combines theoretical depth with experimental comparison. On the one hand, it tests whether explicit and stochastic regularization work well together empirically. On the other hand, it gives the project a stronger conceptual basis by treating L2 not just as weight decay, but as a MAP objective with a Gaussian prior. For that reason, this combined setup is not only a practical experiment, but also one of the clearest examples in the project of how empirical methodology and theoretical interpretation were integrated. 
+The value of this notebook lies in the fact that it combines theoretical depth with experimental comparison. On the one hand, it tests whether explicit and stochastic regularization work well together empirically. On the other hand, it gives the project a stronger conceptual basis by treating L2 not just as weight decay, but as a MAP objective with a Gaussian prior.
+
+The expected effect of this combination was improved generalization relative to the unregularized baseline, together with a more controlled parameter space than dropout alone would provide. The observed results indicate that **L2 + Dropout** performed strongly and remained one of the better methods in the core branch, with noticeably improved validation and test behavior relative to the baseline. However, its advantage over dropout alone was limited, which suggests that while explicit and stochastic regularization are compatible, the combined benefit in this particular setup was complementary but not dramatically additive.
+
+---
 
 ## 5.3 Extended Regularization Methods
 
@@ -342,38 +348,54 @@ A key design decision in this project was that optimization was not studied on t
 
 This design also preserved the overall logic of the project. The study first asked how regularization methods change model behavior under controlled conditions. Only after that question had been explored did it move to the question of how a strong regularized setup should be trained most effectively. This sequencing kept the optimization section subordinate to, and informed by, the regularization results rather than turning the report into two disconnected mini-projects. 
 
-### 7.3 Optimizers Compared
+## 7.3 Optimizers Compared
 
 The final optimization notebook compared three optimizers:
 
 - **SGD**
 - **SGD + Momentum**
-- **AdamW** :contentReference[oaicite:13]{index=13}
+- **AdamW**
 
-These choices were natural in the context of both the course material and the project proposal. The course covers SGD, momentum-based methods, adaptive optimizers such as Adam, and learning-rate scheduling as core optimization topics. :contentReference[oaicite:14]{index=14} The proposal document also explicitly suggested that a short optimizer comparison between **SGD**, **SGD + Momentum**, and **Adam** could be added as a bonus extension. :contentReference[oaicite:15]{index=15}
+These choices were natural in the context of both the course material and the project proposal. The comparison was designed as a **fast selection stage** performed on top of the stronger full-combo configuration rather than on the weak unregularized baseline. This made it possible to evaluate optimizer behavior under a more realistic final training regime.
 
-Within the project, the optimizer comparison was designed as a **fast selection stage** performed on top of the stronger full-combo configuration. The reported results show that **AdamW** achieved the strongest validation and test behavior among the tested candidates, outperforming both plain SGD and SGD with momentum in that setting. This justified carrying AdamW forward into the later learning-rate and scheduler comparison stages. :contentReference[oaicite:16]{index=16}
+Each optimizer was included for a specific reason. **Plain SGD** served as the simplest baseline optimizer and as an important reference point, since much of the earlier regularization branch had already used SGD under fixed conditions. **SGD + Momentum** was included because momentum-based methods are a standard improvement over vanilla SGD and are often expected to provide smoother and faster convergence. **AdamW** was included because it represents an adaptive optimization strategy with decoupled weight decay, and was therefore a strong candidate for training a more complex regularized configuration efficiently.
 
-### 7.4 Learning-Rate Comparison
+The expected behavior was that SGD would provide the most conservative baseline, SGD + Momentum would improve optimization efficiency relative to plain SGD, and AdamW would potentially offer the strongest convergence and final validation performance because of its adaptive step-size behavior. The observed results were consistent with this general expectation. Plain SGD produced the weakest validation and test performance among the three. SGD + Momentum improved slightly over vanilla SGD, indicating some benefit from momentum-based updates. AdamW achieved the strongest validation and test behavior in this selection stage, which justified carrying it forward into the later learning-rate and scheduler comparison stages.
 
-After selecting the best optimizer family, the next step was to test learning-rate sensitivity. This stage was important because optimizer choice alone is not sufficient: a good optimizer can still perform poorly if its learning rate is badly chosen. In the final optimization notebook, learning-rate comparison was performed for **AdamW**, with candidate values:
+Methodologically, this optimizer comparison was important because it showed that once regularization has established a stronger training regime, optimization choices still meaningfully affect the final outcome. The comparison therefore did not replace the main regularization analysis, but extended it by asking how the stronger integrated configuration should be trained most effectively.
+
+---
+
+## 7.4 Learning-Rate Comparison
+
+After selecting the best optimizer family, the next step was to test learning-rate sensitivity. This stage was important because optimizer choice alone is not sufficient: even a strong optimizer can perform poorly if its learning rate is not well matched to the training regime. In the final optimization notebook, the learning-rate comparison was performed for **AdamW**, with candidate values:
 
 - `1e-2`
 - `1e-3`
-- `1e-4` :contentReference[oaicite:17]{index=17}
+- `1e-4`
 
-The reported results showed that **0.001** was the most suitable choice under the selected full-combo regime, offering the best balance among the tested options. This stage was methodologically useful because it ensured that the final optimizer comparison did not stop at a coarse label such as “AdamW is best,” but instead refined that choice into a more practically valid training configuration. :contentReference[oaicite:18]{index=18}
+The purpose of this comparison was to determine which step size offered the best balance between effective optimization and stable generalization in the selected full-combo regime. A learning rate that is too large may cause unstable or less precise convergence, while a learning rate that is too small may slow learning or prevent the model from reaching a stronger solution within the epoch budget.
 
-### 7.5 Scheduler Comparison
+The reported results showed that **0.001** was the most suitable choice under the selected full-combo configuration. This value achieved the strongest overall validation behavior among the tested candidates and therefore was selected for the later scheduler comparison and final tuned run. This stage was methodologically useful because it refined the optimizer result into a more practically valid training setup rather than stopping at the broader conclusion that “AdamW worked best.”
+
+---
+
+## 7.5 Scheduler Comparison
 
 The final stage of the optimization analysis was the scheduler comparison. Once the optimizer and learning rate had been selected, the study compared four scheduler settings:
 
 - **None**
 - **StepLR**
 - **CosineAnnealingLR**
-- **ReduceLROnPlateau** :contentReference[oaicite:19]{index=19}
+- **ReduceLROnPlateau**
 
-This stage was necessary because learning-rate schedules can substantially affect both convergence behavior and final performance, especially in later training stages. By including a scheduler comparison, the project extended the optimization study beyond a simple optimizer benchmark and turned it into a more complete investigation of training dynamics. According to the saved results, **StepLR** was selected by validation performance in the final optimization notebook, while **CosineAnnealingLR** also showed strong behavior and had already been used successfully in the full-combo stage. :contentReference[oaicite:20]{index=20}
+This stage was necessary because learning-rate schedules can substantially affect both convergence behavior and final performance, especially in later training stages. A scheduler influences not only how quickly the model learns early on, but also how well it refines its parameters as training progresses. For that reason, the project extended the optimization study beyond a simple optimizer benchmark and turned it into a more complete investigation of training dynamics.
+
+The selection criterion in this stage was primarily **validation performance**, since the broader project was designed around controlled generalization analysis rather than raw training fit. Under that criterion, **StepLR** was selected in the final optimization notebook. At the same time, the comparison also showed that **CosineAnnealingLR** remained a strong alternative, especially because it performed well on test and adversarial accuracy and had already been used successfully in the earlier full-combo stage.
+
+The scheduler comparison therefore contributed two important conclusions. First, scheduler choice still matters even after optimizer family and learning rate have already been selected. Second, different schedulers may look preferable depending on whether the emphasis is placed on validation selection, test behavior, or robustness-related outcomes. This made the scheduler analysis a meaningful final step in the optimization branch rather than a minor implementation detail.
+
+---
 
 ### 7.6 Interpretation of the Optimization Study
 
