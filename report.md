@@ -58,7 +58,7 @@ This project fits the course expectations because it focuses on a **single metho
 
 The project is also directly aligned with the topics covered in the course. Its core components—overfitting diagnosis, L1/L2 regularization, dropout, early stopping, batch normalization, and optimizer comparison—are all part of the methodological material studied in lectures and labs. For that reason, the project does not move away from the course content; instead, it develops it further through a more systematic and comparative experimental design.
 
-Finally, the structure of the project reflects the kind of depth expected in the assignment. The regularization study remains the main focus, while the optimization section is added as a secondary extension built on top of the stronger regularized setup. This preserves the methodological coherence of the work and supports a more meaningful analysis than a broader but less controlled project design.
+Finally, the regularization study remains the main focus, while the optimization section is added as a secondary extension built on top of the stronger regularized setup. This preserves the methodological coherence of the work and supports a more meaningful analysis than a broader but less controlled project design.
 ---
 
 ## 3. Dataset and Experimental Setup
