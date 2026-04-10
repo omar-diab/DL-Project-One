@@ -336,9 +336,9 @@ From a methodological standpoint, this stage supports one of the central conclus
 
 ### 7.1 Why Optimization Was Added
 
-The optimization study was included as a secondary extension of the project after the regularization component had already been established. This addition was consistent with the original project design, which proposed optimizer comparison as a **bonus extension** that could be added without overshadowing the main regularization topic. In that sense, optimization was not treated as a separate or competing project theme, but as the next logical stage after the regularization analysis.
+After the regularization study identified stronger training configurations, optimization was added as the next stage of the analysis. This was a natural extension of the project, since model quality depends not only on regularization choices but also on how the selected configuration is trained.
 
-This extension also fits the structure of the course itself. The syllabus presents **regularization** and **optimization for training deep models** as adjacent core topics, covering SGD, momentum, Adam, and learning-rate scheduling after the regularization unit. Since the regularization study had already produced a stronger integrated setup, it became methodologically meaningful to ask how that setup should be optimized most effectively.
+For that reason, the optimization section focuses on optimizer, learning-rate, and scheduler comparison on top of the stronger regularized setup. This makes it possible to examine not only which regularization methods improve generalization, but also how the resulting configuration can be trained most effectively.
 
 ### 7.2 Why Optimization Was Performed on the Stronger Setup
 
