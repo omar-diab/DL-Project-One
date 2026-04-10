@@ -678,7 +678,7 @@ The optimization section extends this logic further. After establishing a strong
 
 ---
 
-## 12. Limitations
+## 10. Limitations
 
 This study should be interpreted within the scope of its chosen experimental design. First, the project uses an **MLP-based setup** on CIFAR-10 rather than a convolutional architecture. This was a deliberate choice to keep the effect of regularization and optimization methods easier to isolate and interpret, but it also means that the findings are most directly valid for the selected architecture and training regime.
 
@@ -690,7 +690,7 @@ Overall, these limitations do not weaken the main contribution of the project. I
 
 ---
 
-## 13. Conclusion
+## 11. Conclusion
 
 This project presented a **controlled study of regularization and optimization** on CIFAR-10 using an intentionally overfitting MLP baseline. Rather than approaching the task as a broad benchmark problem, the study was designed around a methodology-first framework in which the core experimental conditions were kept fixed and the effect of individual methods was examined systematically. This design made it possible to interpret changes in overfitting, generalization, and training behavior more clearly than in a loosely structured experimental setup. 
 
